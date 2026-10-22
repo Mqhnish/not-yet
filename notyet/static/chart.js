@@ -91,6 +91,7 @@ const Nights = (() => {
   function paint(m) {
     if (!m || !g) return;
     shown = m;
+    if (active >= m.blocks.length) active = 0; // an edit can leave fewer blocks
     svg.textContent = "";
     const L = {};
     for (const k of ["grid", "tracks", "bands", "past", "wash", "events", "blocks", "deadlines", "now", "labels", "axis"]) {
