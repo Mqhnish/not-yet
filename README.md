@@ -78,7 +78,7 @@ LLM_BASE_URL=http://localhost:11434/v1 LLM_MODEL=gemma4:e4b uvicorn notyet.app:a
 ```
 Any OpenAI-compatible server works (Ollama, mlx_lm.server, llama.cpp, LM Studio, vLLM). There's also a terminal version: `echo "essay due friday, 4h" | python -m notyet --ics plan.ics`.
 
-**Tests:** `pip install pytest && pytest` (67 tests: scheduler, date resolver, extraction checks, brief fact check, iCalendar output, both model backends with mocked HTTP, and the API).
+**Tests:** `pip install pytest && pytest` (70 tests: scheduler, date resolver, extraction checks, brief fact check, iCalendar output, both model backends with mocked HTTP, the API, and the terminal version's time-zone fallback).
 
 ## Deploy on Render
 The repo has a [`render.yaml`](render.yaml) blueprint. In Render: **New > Blueprint**, pick this repo, paste `GEMINI_API_KEY` when asked. It runs on the free plan. `GEMMA_MODEL` is a preference list (`gemma-4-26b-a4b-it,gemma-4-31b-it,gemma-3-27b-it`), so if a model is missing on the API the next one answers. `python scripts/check_gemini.py` shows which models your key can see and plans one sample end to end.
