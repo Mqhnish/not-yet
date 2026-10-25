@@ -99,13 +99,19 @@ const Nights = (() => {
       L[k] = el("g", { class: `l-${k}` }, svg);
     }
 
-    // hour grid and axis
+    // hour grid and axis. "00:00" is about 36px wide and "now" about 26px; an hour label
+    // that would touch "now" is dropped. The edge labels hang inwards, so compare spans.
     const nowX = m.now >= 0 && m.now < DAY ? xAt(m.now) : null;
+    const nowAnchor = nowX === null ? null : nowX - g.x0 < 20 ? "start" : g.x0 + g.tw - nowX < 20 ? "end" : "middle";
+    const span = (x, w, anchor) => (anchor === "start" ? [x, x + w] : anchor === "end" ? [x - w, x] : [x - w / 2, x + w / 2]);
+    const nowSpan = nowX === null ? null : span(nowX, 26, nowAnchor);
     for (const h of [0, 6, 12, 18, 24]) {
       const x = xAt(h * 60);
       el("line", { x1: x, x2: x, y1: g.axisH - 4, y2: g.H, class: "grid" }, L.grid);
-      if (nowX !== null && Math.abs(nowX - x) < (g.narrow ? 26 : 34)) continue;
-      const t = el("text", { x, y: 14, class: "tick", "text-anchor": h === 0 ? "start" : h === 24 ? "end" : "middle" }, L.axis);
+      const anchor = h === 0 ? "start" : h === 24 ? "end" : "middle";
+      const [a, b] = span(x, 36, anchor);
+      if (nowSpan && a < nowSpan[1] + 6 && nowSpan[0] < b + 6) continue;
+      const t = el("text", { x, y: 14, class: "tick", "text-anchor": anchor }, L.axis);
       t.textContent = `${String(h).padStart(2, "0")}:00`;
     }
 
@@ -129,7 +135,7 @@ const Nights = (() => {
     if (nowX !== null) {
       el("rect", { x: g.x0, y: rowTop(0), width: nowX - g.x0, height: g.trackH, rx: 4, class: "past" }, L.past);
       el("line", { x1: nowX, x2: nowX, y1: g.axisH - 6, y2: rowTop(0) + g.trackH + 3, class: "now" }, L.now);
-      const t = el("text", { x: nowX, y: 14, class: "tick now-label", "text-anchor": nowX - g.x0 < 20 ? "start" : "middle" }, L.axis);
+      const t = el("text", { x: nowX, y: 14, class: "tick now-label", "text-anchor": nowAnchor }, L.axis);
       t.textContent = "now";
     }
 
