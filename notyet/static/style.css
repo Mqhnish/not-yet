@@ -242,7 +242,7 @@ textarea:focus { outline: none; }
 
 .chart { position: relative; min-height: 120px; transition: opacity 0.3s; }
 .chart.waiting { opacity: 0.45; }
-.nights-svg { display: block; overflow: visible; }
+.nights-svg { display: block; overflow: visible; max-width: 100%; } /* never wider than the box while a resize redraws it */
 .nights-svg text { font-family: var(--text); fill: var(--moon-2); font-size: 12px; font-variant-numeric: tabular-nums; }
 .nights-svg .day { fill: var(--moon); font-size: 13px; }
 .nights-svg .day.sloth { fill: var(--moon-2); }
@@ -377,7 +377,13 @@ td input:focus { border-color: var(--ink-3); }
   .until { line-height: 0.98; }
   .agenda > li { grid-template-columns: 1fr; gap: 2px; }
   .foot { padding: 4px 16px 40px; }
+}
 
+/* The table's inputs alone need about 630px, so any narrower box (a phone, or the
+   right-hand column on a 1024px screen) gets one card per task instead. */
+.tasks-box { container: tasks / inline-size; }
+
+@container tasks (max-width: 679px) {
   table, tbody, tr, td { display: block; }
   thead { display: none; }
   tr { position: relative; padding: 14px 0; border-bottom: 1px solid var(--rule); display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; }

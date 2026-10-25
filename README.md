@@ -13,7 +13,7 @@ Paste the to-do brain dump that's been living in your head. Not Yet reads it wit
 - **One click to your calendar** (.ics), and every number and date is editable, with an instant re-plan and no model call.
 - **The next 14 days on one chart.** Work lights up only in the hours you're willing to work, and the stretch you're free is shaded in. Change the margin or an estimate and the blocks slide to their new times.
 
-**Live demo:** https://not-yet.onrender.com (free tier, so the first load can take up to a minute while it wakes up)
+**Live demo:** https://not-yet-uomu.onrender.com (free tier, so the first load can take up to a minute while it wakes up)
 
 ## How it works
 
