@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Not Yet</title>
+  <meta name="description" content="Paste your to-do brain dump. Not Yet finds the laziest schedule that still hits every deadline. Runs on Gemma, an open-weight model.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦥</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand"><span class="logo" aria-hidden="true">🦥</span> Not Yet</div>
+    <p class="tag">The laziest schedule that still hits every deadline.</p>
+  </header>
+
+  <main class="layout">
+    <section class="card input" aria-labelledby="dump-h">
+      <h2 id="dump-h">Brain dump</h2>
+      <p class="hint">Everything on your mind, in any order. Dates like "friday" or "before the 25th" are fine.</p>
+      <div class="chips" id="samples" aria-label="Sample brain dumps"></div>
+      <textarea id="text" rows="10" spellcheck="false" aria-label="Brain dump"></textarea>
+      <div class="count"><span id="count">0</span> / <span id="max">3000</span></div>
+
+      <fieldset class="settings">
+        <legend>When you're willing to work</legend>
+        <div class="row">
+          <label><input type="checkbox" id="wd-on" checked> Weekdays</label>
+          <input type="time" id="wd-s" value="19:00" aria-label="Weekday start"> <span>to</span>
+          <input type="time" id="wd-e" value="23:00" aria-label="Weekday end">
+        </div>
+        <div class="row">
+          <label><input type="checkbox" id="we-on" checked> Weekends</label>
+          <input type="time" id="we-s" value="11:00" aria-label="Weekend start"> <span>to</span>
+          <input type="time" id="we-e" value="18:00" aria-label="Weekend end">
+        </div>
+        <div class="row">
+          <label for="margin">Finish early by</label>
+          <select id="margin">
+            <option value="0">0 h (living dangerously)</option>
+            <option value="6">6 h</option>
+            <option value="12" selected>12 h</option>
+            <option value="24">24 h</option>
+            <option value="48">48 h</option>
+          </select>
+        </div>
+      </fieldset>
+
+      <button class="go" id="go">Tell me when I have to care</button>
+      <p class="fine" id="model">Loading model info…</p>
+    </section>
+
+    <section class="results" id="results" aria-live="polite">
+      <div class="card empty" id="empty">
+        <div class="big-sloth" aria-hidden="true">🦥</div>
+        <p>Pick a sample or paste your own list, then press the button.</p>
+        <p class="fine">Not Yet reads your list with Gemma, works out how many hours each thing needs, and schedules every task as late as it can safely go. Then it tells you how long you can do nothing.</p>
+      </div>
+
+      <div class="card loading hidden" id="loading">
+        <div class="big-sloth slow" aria-hidden="true">🦥</div>
+        <p>Reading your list slowly and carefully… <span id="elapsed">0</span>s</p>
+      </div>
+
+      <div class="card error hidden" id="error"></div>
+
+      <div id="out" class="hidden">
+        <div class="card hero">
+          <p class="eyebrow">You can relax until</p>
+          <p class="until" id="until"></p>
+          <p class="free" id="free"></p>
+          <p class="brief" id="brief"></p>
+          <div class="stats" id="stats"></div>
+          <div class="actions">
+            <button class="ghost" id="ics">Add the plan to my calendar (.ics)</button>
+          </div>
+        </div>
+
+        <div class="card hidden" id="now-card">
+          <h3>Just do these now</h3>
+          <p class="hint">Each takes under five minutes. Doing them is lazier than remembering them.</p>
+          <ul id="now-list" class="plain"></ul>
+        </div>
+
+        <div class="card">
+          <h3>The next 14 days</h3>
+          <div class="days" id="days"></div>
+        </div>
+
+        <div class="card">
+          <h3>Every task</h3>
+          <p class="hint">Gemma guessed some of these. Fix any number or date and the plan updates instantly, no model call.</p>
+          <div class="table-wrap"><table id="tasks">
+            <thead><tr><th>Task</th><th>Deadline</th><th>Effort</th><th>Ignore until</th><th></th></tr></thead>
+            <tbody></tbody>
+          </table></div>
+        </div>
+
+        <p class="fine meta" id="meta"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    Built for the DEV Hacktoberfest Open-Source AI Challenge. Runs on <a href="https://ai.google.dev/gemma" target="_blank" rel="noopener">Gemma</a>, an open-weight model, and works the same on a laptop with no internet.
+    <a href="https://github.com/mqhnish/not-yet" target="_blank" rel="noopener">Source on GitHub</a>.
+  </footer>
+  <script src="/static/app.js"></script>
+</body>
+</html>

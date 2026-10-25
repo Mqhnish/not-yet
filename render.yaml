@@ -1,0 +1,16 @@
+# Render Blueprint: New > Blueprint > pick this repo. Render asks for GEMINI_API_KEY.
+services:
+  - type: web
+    name: not-yet
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn notyet.app:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /healthz
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMMA_MODEL
+        value: gemma-4-26b-a4b-it,gemma-4-31b-it,gemma-3-27b-it
