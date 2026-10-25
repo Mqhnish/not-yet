@@ -23,11 +23,13 @@ def run(url: str) -> None:
             ("plan-mobile.png", {"viewport": {"width": 390, "height": 844}, "color_scheme": "light", "device_scale_factor": 2}, False),
         ]
         for name, opts, full in shots:
-            page = browser.new_page(timezone_id="Asia/Singapore", **opts)
+            # reduced motion skips the reveal animation, so the shot shows the settled plan
+            page = browser.new_page(timezone_id="Asia/Singapore", reduced_motion="reduce", **opts)
             page.goto(url)
             page.wait_for_selector(".chip")
             page.click("#go")
             page.wait_for_selector("#out:not(.hidden)", timeout=180_000)
+            page.evaluate("document.fonts.ready.then(() => true)")
             if name == "plan-mobile.png":
                 page.locator(".hero").scroll_into_view_if_needed()
                 page.screenshot(path=DOCS / name)

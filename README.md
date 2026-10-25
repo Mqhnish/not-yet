@@ -11,6 +11,7 @@ Paste the to-do brain dump that's been living in your head. Not Yet reads it wit
 - **Two-minute jobs** go in a "just do these now" list, because doing them is lazier than remembering them.
 - **Honest warnings.** If something won't fit even if you start now, it says so and by how many hours.
 - **One click to your calendar** (.ics), and every number and date is editable, with an instant re-plan and no model call.
+- **The next 14 days on one chart.** Work lights up only in the hours you're willing to work, and the stretch you're free is shaded in. Change the margin or an estimate and the blocks slide to their new times.
 
 **Live demo:** https://not-yet.onrender.com (free tier, so the first load can take up to a minute while it wakes up)
 
@@ -77,7 +78,7 @@ LLM_BASE_URL=http://localhost:11434/v1 LLM_MODEL=gemma4:e4b uvicorn notyet.app:a
 ```
 Any OpenAI-compatible server works (Ollama, mlx_lm.server, llama.cpp, LM Studio, vLLM). There's also a terminal version: `echo "essay due friday, 4h" | python -m notyet --ics plan.ics`.
 
-**Tests:** `pip install pytest && pytest` (67 tests: scheduler, date resolver, extraction checks, brief fact check, iCalendar output, both model backends with mocked HTTP, and the API).
+**Tests:** `pip install pytest && pytest` (70 tests: scheduler, date resolver, extraction checks, brief fact check, iCalendar output, both model backends with mocked HTTP, the API, and the terminal version's time-zone fallback).
 
 ## Deploy on Render
 The repo has a [`render.yaml`](render.yaml) blueprint. In Render: **New > Blueprint**, pick this repo, paste `GEMINI_API_KEY` when asked. It runs on the free plan. `GEMMA_MODEL` is a preference list (`gemma-4-26b-a4b-it,gemma-4-31b-it,gemma-3-27b-it`), so if a model is missing on the API the next one answers. `python scripts/check_gemini.py` shows which models your key can see and plans one sample end to end.
@@ -92,7 +93,7 @@ notyet/
   core.py      glue + labels + .ics events
   llm.py       Gemini API and OpenAI-compatible backends
   app.py       FastAPI app (/api/plan, /api/reschedule)
-  static/      one page, no framework
+  static/      one page and a hand-written SVG chart, no framework
 scripts/       bench.py, screenshots.py
 tests/
 ```
@@ -102,7 +103,7 @@ Your text goes to the model you configure and nowhere else. The server keeps an 
 
 ## Credits
 - [Gemma 4](https://ai.google.dev/gemma) by Google DeepMind, used under the Gemma Terms of Use. Local runs used the [mlx-community/gemma-4-e4b-it-4bit](https://huggingface.co/mlx-community/gemma-4-e4b-it-4bit) conversion with [MLX LM](https://github.com/ml-explore/mlx-lm).
-- [FastAPI](https://fastapi.tiangolo.com/), [httpx](https://www.python-httpx.org/), and the [Fraunces](https://fonts.google.com/specimen/Fraunces) and [Inter](https://fonts.google.com/specimen/Inter) fonts (SIL Open Font License).
+- [FastAPI](https://fastapi.tiangolo.com/), [httpx](https://www.python-httpx.org/), and the [Anybody](https://fonts.google.com/specimen/Anybody) and [Atkinson Hyperlegible Next](https://fonts.google.com/specimen/Atkinson+Hyperlegible+Next) fonts (SIL Open Font License).
 - Built with [Claude Code](https://claude.com/claude-code) as a coding agent. The app itself runs only on Gemma.
 
 ## Licence
