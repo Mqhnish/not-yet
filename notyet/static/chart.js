@@ -89,8 +89,9 @@ const Nights = (() => {
   }
 
   function paint(m) {
-    if (!m || !g) return;
+    if (!m) return;
     shown = m;
+    if (!g || g.tw <= 0) return; // no width yet, e.g. a background tab; the resize observer draws it later
     if (active >= m.blocks.length) active = 0; // an edit can leave fewer blocks
     svg.textContent = "";
     const L = {};
